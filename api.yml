@@ -17,23 +17,17 @@ info:
 servers:
   - url: http://localhost
 paths:
-  /hello:
+  /healthz:
     get:
-      summary: This is just a test endpoint to get you started. Please delete this endpoint.
-      operationId: hello
-      parameters:
-        - name: id
-          in: query
-          required: true
-          schema:
-            type: integer
+      summary: This is just a health check endpoint to get service information.
+      operationId: healthz
       responses:
         '200':
-          description: Test return
+          description: Get health check status
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/HelloResponse"
+                $ref: "#/components/schemas/HealthCheckResponse"
         '404':
           description: Not found
           content:
@@ -42,12 +36,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
-    HelloResponse:
+    HealthCheckResponse:
       type: object
       required:
-        - message
+        - status
       properties:
-        message:
+        status:
           type: string
     ErrorResponse:
       type: object
