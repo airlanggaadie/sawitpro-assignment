@@ -21,6 +21,12 @@ func (s *Server) Healthz(ctx echo.Context) error {
 // (POST /login)
 func (s *Server) Login(ctx echo.Context) error {
 	var bodyRequest generated.LoginRequest
+	err := ctx.Bind(&bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: "invalid payload",
+		})
+	}
 
 	response, err := s.usecase.Login(ctx.Request().Context(), bodyRequest)
 	if err != nil {
@@ -30,7 +36,7 @@ func (s *Server) Login(ctx echo.Context) error {
 			})
 		}
 
-		return ctx.JSON(http.StatusBadRequest, err)
+		return err
 	}
 
 	return ctx.JSON(http.StatusOK, response)
@@ -61,6 +67,12 @@ func (s *Server) Profile(ctx echo.Context) error {
 // (POST /register)
 func (s *Server) Register(ctx echo.Context) error {
 	var bodyRequest generated.RegisterRequest
+	err := ctx.Bind(&bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: "invalid payload",
+		})
+	}
 
 	response, err := s.usecase.Register(ctx.Request().Context(), bodyRequest)
 	if err != nil {
@@ -90,6 +102,12 @@ func (s *Server) UpdateProfile(ctx echo.Context) error {
 	}
 
 	var bodyRequest generated.UpdateProfileRequest
+	err = ctx.Bind(&bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: "invalid payload",
+		})
+	}
 
 	response, err := s.usecase.UpdateProfile(ctx.Request().Context(), userUUID, bodyRequest)
 	if err != nil {

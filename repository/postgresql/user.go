@@ -56,7 +56,7 @@ func (p *postgresqlRepository) GetUserPasswordById(ctx context.Context, id uuid.
 // CheckPhonenumberExists implements repository.PostgresqlRepositoryInterface.
 func (p *postgresqlRepository) CheckPhonenumberExists(ctx context.Context, phonenumber string) (bool, error) {
 	var exists bool
-	if err := p.DB.QueryRowContext(ctx, "SELECT EXISTS (SELECT * FROM users WHERE phonenumber = $1", phonenumber).Scan(
+	if err := p.DB.QueryRowContext(ctx, "SELECT EXISTS (SELECT * FROM users WHERE phonenumber = $1)", phonenumber).Scan(
 		&exists,
 	); err != nil {
 		return true, fmt.Errorf("[postgresql][checkphonenumberexists] error query: %v", err)
@@ -94,7 +94,7 @@ func (p *postgresqlRepository) InsertNewUser(ctx context.Context, newUser model.
 	defer tx.Rollback()
 
 	var userId uuid.UUID
-	if err := tx.QueryRowContext(ctx, "INSERT INTO users (id, fullname, phonenumber) VALUES ($1, $2, $3) RETURNING id, fullname, phonenumber", newUser.Id, newUser.Fullname, newUser.Phonenumber).Scan(
+	if err := tx.QueryRowContext(ctx, "INSERT INTO users (id, fullname, phonenumber) VALUES ($1, $2, $3) RETURNING id", newUser.Id, newUser.Fullname, newUser.Phonenumber).Scan(
 		&userId,
 	); err != nil {
 		return uuid.Nil, fmt.Errorf("[postgresql][insertnewuser] execution error: %w", err)

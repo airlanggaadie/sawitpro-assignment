@@ -13,7 +13,7 @@
 CREATE TABLE IF NOT EXISTS "users" (
   id                  UUID PRIMARY KEY NOT NULL,
   fullname            VARCHAR(60) NOT NULL,
-  phonenumber				  VARCHAR(13) NOT NULL UNIQUE,
+  phonenumber				  VARCHAR(15) NOT NULL UNIQUE,
   -- also can add another field for user information
   created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
