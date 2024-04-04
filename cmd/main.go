@@ -1,11 +1,12 @@
 package main
 
 import (
-	"os"
+	"log"
 
 	"github.com/SawitProRecruitment/UserService/generated"
 	"github.com/SawitProRecruitment/UserService/handler"
-	"github.com/SawitProRecruitment/UserService/repository"
+	"github.com/SawitProRecruitment/UserService/repository/postgresql"
+	"github.com/SawitProRecruitment/UserService/usecase"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,12 +21,18 @@ func main() {
 }
 
 func newServer() *handler.Server {
-	dbDsn := os.Getenv("DATABASE_URL")
-	var repo repository.RepositoryInterface = repository.NewRepository(repository.NewRepositoryOptions{
-		Dsn: dbDsn,
-	})
-	opts := handler.NewServerOptions{
-		Repository: repo,
+	db, err := initPostgresql()
+	if err != nil {
+		log.Fatalln(err)
 	}
+
+	postgresql := postgresql.NewPostgresqlRepository(db)
+
+	usecase := usecase.NewUsecase(postgresql)
+
+	opts := handler.NewServerOptions{
+		Usecase: usecase,
+	}
+
 	return handler.NewServer(opts)
 }

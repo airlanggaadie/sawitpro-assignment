@@ -4,8 +4,32 @@
 // interfaces using mockgen. See the Makefile for more information.
 package repository
 
-import "context"
+import (
+	"context"
 
-type RepositoryInterface interface {
-	GetTestById(ctx context.Context, input GetTestByIdInput) (output GetTestByIdOutput, err error)
+	"github.com/SawitProRecruitment/UserService/model"
+	"github.com/google/uuid"
+)
+
+type PostgresqlRepositoryInterface interface {
+	// GetUserById
+	GetUserById(ctx context.Context, id uuid.UUID) (model.User, error)
+
+	// GetUserByPhoneNumber
+	GetUserByPhonenumber(ctx context.Context, phonenumber string) (model.User, error)
+
+	// GetUserPasswordById
+	GetUserPasswordById(ctx context.Context, id uuid.UUID) (model.UserPassword, error)
+
+	// CheckPhonenumberExists
+	CheckPhonenumberExists(ctx context.Context, phonenumber string) (bool, error)
+
+	// CountLoginSession
+	CountLoginSession(ctx context.Context, userId uuid.UUID) error
+
+	// InsertNewUser
+	InsertNewUser(ctx context.Context, newUser model.User, userAuth model.UserPassword) (uuid.UUID, error)
+
+	// UpdateUser
+	UpdateUser(ctx context.Context, userId uuid.UUID, fullname, phonenumber string) (uuid.UUID, error)
 }

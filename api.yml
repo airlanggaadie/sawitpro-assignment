@@ -25,7 +25,7 @@ paths:
         '200':
           description: Get health check status
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/HealthCheckResponse"
         '404':
@@ -34,8 +34,159 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /register:
+    post:
+      summary: This endpoint should store the newly created user in the database. The password should be hashed and salted in the database. Successful request should return the ID of the user.
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        '200':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /login:
+    post:
+      summary: This endpoint will check the database whether the combination exists.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        '200':
+          description: Success login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /profile:
+    get:
+      summary: This endpoint will check the database and giving user information.
+      operationId: profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Success login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+        '403':
+          description: Unauthorized
+    put:
+      summary: This endpoint will update user information.
+      operationId: updateProfile
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        '200':
+          description: Success update profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateProfileResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: phone number already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Unauthorized
 components:
   schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - fullname
+        - phonenumber
+        - password
+      properties:
+        fullname:
+          type: string
+          description: Full name of the user
+          minLength: 3
+          maxLength: 60
+          example: "John Doe"
+        phonenumber:
+          type: string
+          format: phone
+          minLength: 10
+          maxLength: 13
+          example: "+6281234567890"
+        password:
+          type: string
+          description: Password of the user that containing at least 1 capital characters AND 1 number AND 1 special (non alpha-numeric) characters.
+          minLength: 6
+          maxLength: 64
+          example: "verysecretPassw0rd!"
+    LoginRequest:
+      type: object
+      required:
+        - phonenumber
+        - password
+      properties:
+        phonenumber:
+          type: string
+          format: phone
+          minLength: 10
+          maxLength: 13
+          example: "+6281234567890"
+        password:
+          type: string
+          description: Password of the user that containing at least 1 capital characters AND 1 number AND 1 special (non alpha-numeric) characters.
+          minLength: 6
+          maxLength: 64
+          example: "verysecretPassw0rd!"
+    UpdateProfileRequest:
+      type: object
+      required:
+        - fullname
+        - phonenumber
+      properties:
+        fullname:
+          type: string
+          description: Full name of the user
+          minLength: 3
+          maxLength: 60
+          example: "John Doe"
+        phonenumber:
+          type: string
+          format: phone
+          minLength: 10
+          maxLength: 13
+          example: "+6281234567890"
     HealthCheckResponse:
       type: object
       required:
@@ -43,6 +194,10 @@ components:
       properties:
         status:
           type: string
+          description: Health check status
+          enum:
+            - "OK"
+          example: "OK"
     ErrorResponse:
       type: object
       required:
@@ -50,3 +205,54 @@ components:
       properties:
         message:
           type: string
+    RegisterResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          format: uuid
+          type: string
+    LoginResponse:
+      type: object
+      required:
+        - id
+        - token
+      properties:
+        id:
+          type: string
+          format: uuid
+        token:
+          type: string
+          format: JWT
+    ProfileResponse:
+      type: object
+      required:
+        - fullname
+        - phonenumber
+      properties:
+        fullname:
+          type: string
+          description: Full name of the user
+          minLength: 3
+          maxLength: 60
+          example: "John Doe"
+        phonenumber:
+          type: string
+          format: phone
+          minLength: 10
+          maxLength: 13
+          example: "+6281234567890"
+    UpdateProfileResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          format: uuid
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

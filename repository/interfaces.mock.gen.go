@@ -8,43 +8,134 @@ import (
 	context "context"
 	reflect "reflect"
 
+	model "github.com/SawitProRecruitment/UserService/model"
 	gomock "github.com/golang/mock/gomock"
+	uuid "github.com/google/uuid"
 )
 
-// MockRepositoryInterface is a mock of RepositoryInterface interface.
-type MockRepositoryInterface struct {
+// MockPostgresqlRepositoryInterface is a mock of PostgresqlRepositoryInterface interface.
+type MockPostgresqlRepositoryInterface struct {
 	ctrl     *gomock.Controller
-	recorder *MockRepositoryInterfaceMockRecorder
+	recorder *MockPostgresqlRepositoryInterfaceMockRecorder
 }
 
-// MockRepositoryInterfaceMockRecorder is the mock recorder for MockRepositoryInterface.
-type MockRepositoryInterfaceMockRecorder struct {
-	mock *MockRepositoryInterface
+// MockPostgresqlRepositoryInterfaceMockRecorder is the mock recorder for MockPostgresqlRepositoryInterface.
+type MockPostgresqlRepositoryInterfaceMockRecorder struct {
+	mock *MockPostgresqlRepositoryInterface
 }
 
-// NewMockRepositoryInterface creates a new mock instance.
-func NewMockRepositoryInterface(ctrl *gomock.Controller) *MockRepositoryInterface {
-	mock := &MockRepositoryInterface{ctrl: ctrl}
-	mock.recorder = &MockRepositoryInterfaceMockRecorder{mock}
+// NewMockPostgresqlRepositoryInterface creates a new mock instance.
+func NewMockPostgresqlRepositoryInterface(ctrl *gomock.Controller) *MockPostgresqlRepositoryInterface {
+	mock := &MockPostgresqlRepositoryInterface{ctrl: ctrl}
+	mock.recorder = &MockPostgresqlRepositoryInterfaceMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockRepositoryInterface) EXPECT() *MockRepositoryInterfaceMockRecorder {
+func (m *MockPostgresqlRepositoryInterface) EXPECT() *MockPostgresqlRepositoryInterfaceMockRecorder {
 	return m.recorder
 }
 
-// GetTestById mocks base method.
-func (m *MockRepositoryInterface) GetTestById(ctx context.Context, input GetTestByIdInput) (GetTestByIdOutput, error) {
+// CheckPhonenumberExists mocks base method.
+func (m *MockPostgresqlRepositoryInterface) CheckPhonenumberExists(ctx context.Context, phonenumber string) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTestById", ctx, input)
-	ret0, _ := ret[0].(GetTestByIdOutput)
+	ret := m.ctrl.Call(m, "CheckPhonenumberExists", ctx, phonenumber)
+	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetTestById indicates an expected call of GetTestById.
-func (mr *MockRepositoryInterfaceMockRecorder) GetTestById(ctx, input interface{}) *gomock.Call {
+// CheckPhonenumberExists indicates an expected call of CheckPhonenumberExists.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) CheckPhonenumberExists(ctx, phonenumber interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTestById", reflect.TypeOf((*MockRepositoryInterface)(nil).GetTestById), ctx, input)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckPhonenumberExists", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).CheckPhonenumberExists), ctx, phonenumber)
+}
+
+// CountLoginSession mocks base method.
+func (m *MockPostgresqlRepositoryInterface) CountLoginSession(ctx context.Context, userId uuid.UUID) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountLoginSession", ctx, userId)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CountLoginSession indicates an expected call of CountLoginSession.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) CountLoginSession(ctx, userId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountLoginSession", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).CountLoginSession), ctx, userId)
+}
+
+// GetUserById mocks base method.
+func (m *MockPostgresqlRepositoryInterface) GetUserById(ctx context.Context, id uuid.UUID) (model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserById", ctx, id)
+	ret0, _ := ret[0].(model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserById indicates an expected call of GetUserById.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) GetUserById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserById", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).GetUserById), ctx, id)
+}
+
+// GetUserByPhonenumber mocks base method.
+func (m *MockPostgresqlRepositoryInterface) GetUserByPhonenumber(ctx context.Context, phonenumber string) (model.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserByPhonenumber", ctx, phonenumber)
+	ret0, _ := ret[0].(model.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserByPhonenumber indicates an expected call of GetUserByPhonenumber.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) GetUserByPhonenumber(ctx, phonenumber interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByPhonenumber", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).GetUserByPhonenumber), ctx, phonenumber)
+}
+
+// GetUserPasswordById mocks base method.
+func (m *MockPostgresqlRepositoryInterface) GetUserPasswordById(ctx context.Context, id uuid.UUID) (model.UserPassword, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetUserPasswordById", ctx, id)
+	ret0, _ := ret[0].(model.UserPassword)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetUserPasswordById indicates an expected call of GetUserPasswordById.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) GetUserPasswordById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserPasswordById", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).GetUserPasswordById), ctx, id)
+}
+
+// InsertNewUser mocks base method.
+func (m *MockPostgresqlRepositoryInterface) InsertNewUser(ctx context.Context, newUser model.User, userAuth model.UserPassword) (uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InsertNewUser", ctx, newUser, userAuth)
+	ret0, _ := ret[0].(uuid.UUID)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InsertNewUser indicates an expected call of InsertNewUser.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) InsertNewUser(ctx, newUser, userAuth interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertNewUser", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).InsertNewUser), ctx, newUser, userAuth)
+}
+
+// UpdateUser mocks base method.
+func (m *MockPostgresqlRepositoryInterface) UpdateUser(ctx context.Context, userId uuid.UUID, fullname, phonenumber string) (uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateUser", ctx, userId, fullname, phonenumber)
+	ret0, _ := ret[0].(uuid.UUID)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateUser indicates an expected call of UpdateUser.
+func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) UpdateUser(ctx, userId, fullname, phonenumber interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).UpdateUser), ctx, userId, fullname, phonenumber)
 }
