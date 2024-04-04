@@ -6,10 +6,12 @@ import (
 
 type usecase struct {
 	repository repository.PostgresqlRepositoryInterface
+	jwt        repository.JWTRepositoryInterface
 }
 
-func NewUsecase(repository repository.PostgresqlRepositoryInterface) UsecaseInterface {
+func NewUsecase(repository repository.PostgresqlRepositoryInterface, jwt repository.JWTRepositoryInterface) UsecaseInterface {
 	return &usecase{
 		repository: repository,
+		jwt:        jwt,
 	}
 }

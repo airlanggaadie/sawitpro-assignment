@@ -28,6 +28,13 @@ func (s *Server) Login(ctx echo.Context) error {
 		})
 	}
 
+	err = s.validateLoginRequest(bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
 	response, err := s.usecase.Login(ctx.Request().Context(), bodyRequest)
 	if err != nil {
 		if errors.Is(err, model.ErrAuthentication) {
@@ -74,6 +81,13 @@ func (s *Server) Register(ctx echo.Context) error {
 		})
 	}
 
+	err = s.validateRegisterRequest(bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: err.Error(),
+		})
+	}
+
 	response, err := s.usecase.Register(ctx.Request().Context(), bodyRequest)
 	if err != nil {
 		if errors.Is(err, model.ErrDuplicateData) {
@@ -106,6 +120,13 @@ func (s *Server) UpdateProfile(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
 			Message: "invalid payload",
+		})
+	}
+
+	err = s.validateUpdateRequest(bodyRequest)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{
+			Message: err.Error(),
 		})
 	}
 

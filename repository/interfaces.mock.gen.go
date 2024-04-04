@@ -7,6 +7,7 @@ package repository
 import (
 	context "context"
 	reflect "reflect"
+	time "time"
 
 	model "github.com/SawitProRecruitment/UserService/model"
 	gomock "github.com/golang/mock/gomock"
@@ -138,4 +139,57 @@ func (m *MockPostgresqlRepositoryInterface) UpdateUser(ctx context.Context, user
 func (mr *MockPostgresqlRepositoryInterfaceMockRecorder) UpdateUser(ctx, userId, fullname, phonenumber interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockPostgresqlRepositoryInterface)(nil).UpdateUser), ctx, userId, fullname, phonenumber)
+}
+
+// MockJWTRepositoryInterface is a mock of JWTRepositoryInterface interface.
+type MockJWTRepositoryInterface struct {
+	ctrl     *gomock.Controller
+	recorder *MockJWTRepositoryInterfaceMockRecorder
+}
+
+// MockJWTRepositoryInterfaceMockRecorder is the mock recorder for MockJWTRepositoryInterface.
+type MockJWTRepositoryInterfaceMockRecorder struct {
+	mock *MockJWTRepositoryInterface
+}
+
+// NewMockJWTRepositoryInterface creates a new mock instance.
+func NewMockJWTRepositoryInterface(ctrl *gomock.Controller) *MockJWTRepositoryInterface {
+	mock := &MockJWTRepositoryInterface{ctrl: ctrl}
+	mock.recorder = &MockJWTRepositoryInterfaceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockJWTRepositoryInterface) EXPECT() *MockJWTRepositoryInterfaceMockRecorder {
+	return m.recorder
+}
+
+// Generate mocks base method.
+func (m *MockJWTRepositoryInterface) Generate(userId uuid.UUID, additionalClaims map[string]string, expiry time.Duration) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Generate", userId, additionalClaims, expiry)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Generate indicates an expected call of Generate.
+func (mr *MockJWTRepositoryInterfaceMockRecorder) Generate(userId, additionalClaims, expiry interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Generate", reflect.TypeOf((*MockJWTRepositoryInterface)(nil).Generate), userId, additionalClaims, expiry)
+}
+
+// Verify mocks base method.
+func (m *MockJWTRepositoryInterface) Verify(jwt string) (uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Verify", jwt)
+	ret0, _ := ret[0].(uuid.UUID)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Verify indicates an expected call of Verify.
+func (mr *MockJWTRepositoryInterfaceMockRecorder) Verify(jwt interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockJWTRepositoryInterface)(nil).Verify), jwt)
 }

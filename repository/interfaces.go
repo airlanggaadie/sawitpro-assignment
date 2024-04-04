@@ -6,6 +6,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/SawitProRecruitment/UserService/model"
 	"github.com/google/uuid"
@@ -32,4 +33,9 @@ type PostgresqlRepositoryInterface interface {
 
 	// UpdateUser
 	UpdateUser(ctx context.Context, userId uuid.UUID, fullname, phonenumber string) (uuid.UUID, error)
+}
+
+type JWTRepositoryInterface interface {
+	Generate(userId uuid.UUID, additionalClaims map[string]string, expiry time.Duration) (string, error)
+	Verify(jwt string) (uuid.UUID, error)
 }

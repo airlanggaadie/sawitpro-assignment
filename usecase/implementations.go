@@ -39,7 +39,7 @@ func (u usecase) Login(ctx context.Context, request generated.LoginRequest) (gen
 	}
 
 	// TODO: generate token when verified
-	token, err := "", nil
+	token, err := u.jwt.Generate(user.Id, map[string]string{}, 30*time.Minute)
 	if err != nil {
 		return generated.LoginResponse{}, fmt.Errorf("[usecase][login] generate token error: %v", err)
 	}
