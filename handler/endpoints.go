@@ -6,6 +6,7 @@ import (
 
 	"github.com/SawitProRecruitment/UserService/generated"
 	"github.com/SawitProRecruitment/UserService/model"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -51,12 +52,17 @@ func (s *Server) Login(ctx echo.Context) error {
 // This endpoint will check the database and giving user information.
 // (GET /profile)
 func (s *Server) Profile(ctx echo.Context) error {
-	userId, err := s.authenticate(ctx)
+	userId, ok := ctx.Request().Context().Value(userIdKey).(string)
+	if !ok || userId == "" {
+		return ctx.NoContent(http.StatusForbidden)
+	}
+
+	userUUID, err := uuid.Parse(userId)
 	if err != nil {
 		return ctx.NoContent(http.StatusForbidden)
 	}
 
-	profile, err := s.usecase.GetProfile(ctx.Request().Context(), userId)
+	profile, err := s.usecase.GetProfile(ctx.Request().Context(), userUUID)
 	if err != nil {
 		return err
 	}
@@ -99,7 +105,12 @@ func (s *Server) Register(ctx echo.Context) error {
 // This endpoint will update user information.
 // (PUT /profile)
 func (s *Server) UpdateProfile(ctx echo.Context) error {
-	userId, err := s.authenticate(ctx)
+	userId, ok := ctx.Request().Context().Value(userIdKey).(string)
+	if !ok || userId == "" {
+		return ctx.NoContent(http.StatusForbidden)
+	}
+
+	userUUID, err := uuid.Parse(userId)
 	if err != nil {
 		return ctx.NoContent(http.StatusForbidden)
 	}
@@ -119,7 +130,7 @@ func (s *Server) UpdateProfile(ctx echo.Context) error {
 		})
 	}
 
-	response, err := s.usecase.UpdateProfile(ctx.Request().Context(), userId, bodyRequest)
+	response, err := s.usecase.UpdateProfile(ctx.Request().Context(), userUUID, bodyRequest)
 	if err != nil {
 		if errors.Is(err, model.ErrDuplicateData) {
 			return ctx.NoContent(http.StatusConflict)
