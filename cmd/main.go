@@ -27,6 +27,13 @@ func main() {
 		log.Fatal(err)
 	}
 
+	middlewares, err := handler.CreateMiddleware(jwtAuthenticator)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	e.Use(middlewares...)
+
 	var server generated.ServerInterface = newServer(jwtAuthenticator)
 
 	generated.RegisterHandlers(e, server)
