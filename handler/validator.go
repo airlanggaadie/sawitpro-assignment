@@ -72,7 +72,7 @@ func (s Server) validatePhonenumber(phonenumber string) []string {
 		errMessage = append(errMessage, "phonenumber must begin with "+prefix)
 	}
 
-	if len(phonenumber) < 12 || len(phonenumber) > 15 {
+	if len(phonenumber) < 12 && len(phonenumber) > 15 {
 		errMessage = append(errMessage, "phonenumber must be between 10 and 13 digits excluding "+prefix)
 	}
 
@@ -81,7 +81,7 @@ func (s Server) validatePhonenumber(phonenumber string) []string {
 
 func (s Server) validatePassword(password string) ([]string, error) {
 	errMessage := []string{}
-	if len(password) < 6 || len(password) > 64 {
+	if len(password) < 6 && len(password) > 64 {
 		errMessage = append(errMessage, "password must be between 6 and 64 characters")
 	}
 
@@ -119,7 +119,7 @@ func (s Server) validatePassword(password string) ([]string, error) {
 
 func (s Server) validateFullname(fullname string) []string {
 	errMessage := []string{}
-	if len(fullname) < 6 || len(fullname) > 60 {
+	if len(fullname) < 6 && len(fullname) > 60 {
 		errMessage = append(errMessage, "fullname must be between 6 and 60 characters")
 	}
 

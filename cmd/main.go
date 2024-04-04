@@ -45,6 +45,7 @@ func newServer(jwtAuthenticator repository.JWTRepositoryInterface) *handler.Serv
 
 	opts := handler.NewServerOptions{
 		Usecase: usecase,
+		Jwt:     jwtAuthenticator,
 	}
 
 	return handler.NewServer(opts)
