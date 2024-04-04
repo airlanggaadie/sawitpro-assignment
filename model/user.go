@@ -63,3 +63,7 @@ func (u *UserPassword) setPassword(password string) error {
 func (u *UserPassword) GetPassword() string {
 	return u.password
 }
+
+func (u *UserPassword) SetHashedPassword(hasedPassword string) {
+	u.password = hasedPassword
+}
