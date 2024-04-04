@@ -1,7 +1,10 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/SawitProRecruitment/UserService/generated"
 	"github.com/SawitProRecruitment/UserService/handler"
@@ -9,6 +12,8 @@ import (
 	"github.com/SawitProRecruitment/UserService/usecase"
 
 	"github.com/labstack/echo/v4"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -35,4 +40,18 @@ func newServer() *handler.Server {
 	}
 
 	return handler.NewServer(opts)
+}
+
+func initPostgresql() (*sql.DB, error) {
+	dbDsn := os.Getenv("DATABASE_URL")
+	if dbDsn == "" {
+		return nil, fmt.Errorf("please configure DATABASE_URL environment variable")
+	}
+
+	db, err := sql.Open("postgres", dbDsn)
+	if err != nil {
+		return nil, fmt.Errorf("[main][initPostgresql] open database error: %v", err)
+	}
+
+	return db, nil
 }
